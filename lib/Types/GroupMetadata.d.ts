@@ -1,10 +1,11 @@
 import { Contact } from './Contact'
 
-export type GroupParticipant = (Contact & {
+export type GroupParticipant = Contact & {
     isAdmin?: boolean
     isSuperAdmin?: boolean
-    admin?: 'admin' | 'superadmin' | 'member'
-})
+    admin?: 'admin' | 'superadmin' | 'member' | null
+    lid?: string // Added for lid support
+}
 
 export type ParticipantAction = 'add' | 'remove' | 'promote' | 'demote' | 'modify'
 
@@ -14,18 +15,23 @@ export type RequestJoinMethod = 'invite_link' | 'linked_group_join' | 'non_admin
 
 export interface GroupMetadata {
     id: string
-    addressingMode: string
+    /** group uses 'lid' or 'pn' to send messages */
+    addressingMode: 'pn' | 'lid' | string // Made more flexible
     owner: string | undefined
-    ownerCountry: string, 
+    ownerJid?: string // For lid mode
+    ownerCountry?: string // Added from second version
     subject: string
     /** group subject owner */
     subjectOwner?: string
+    subjectOwnerJid?: string // For lid mode
     /** group subject modification date */
     subjectTime?: number
     creation?: number
     desc?: string
     descOwner?: string
+    descOwnerJid?: string // For lid mode
     descId?: string
+    descTime?: number
     /** if this group is part of a community, it returns the jid of the community to which it belongs */
     linkedParent?: string
     /** is set when the group only allows admins to change group settings */
@@ -43,7 +49,7 @@ export interface GroupMetadata {
     /** number of group participants */
     size?: number
     participants: GroupParticipant[]
-    picture?: string
+    picture?: string // Added from second version
     ephemeralDuration?: number
     inviteCode?: string
     /** the person who added you to group or changed some setting in group */
@@ -53,14 +59,21 @@ export interface GroupMetadata {
 export interface WAGroupCreateResponse {
     status: number
     gid?: string
-    participants?: [{
-        [key: string]: {}
-    }]
+    participants?: [{ [key: string]: {} }]
 }
 
 export interface GroupModificationResponse {
     status: number
-    participants?: {
-        [key: string]: {}
-    }
+    participants?: { [key: string]: {} }
+}
+
+// Additional types for better lid support
+export interface GroupMetadataLid extends GroupMetadata {
+    addressingMode: 'lid'
+    ownerJid: string
+    participants: (GroupParticipant & { lid: string })[]
+}
+
+export interface GroupMetadataPn extends GroupMetadata {
+    addressingMode: 'pn'
 }
