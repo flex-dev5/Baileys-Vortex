@@ -1,8 +1,3 @@
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-
-// نوع جديد: حالة الحظر
 // نوع جديد: حالة الحظر
 export type ContactBlockStatus = 'BLOCKED' | 'UNBLOCKED';
 
