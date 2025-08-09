@@ -2,6 +2,8 @@ import { Boom } from '@hapi/boom'
 import { SocketConfig } from '../Types'
 import { BinaryNode } from '../WABinary'
 import { WebSocketClient } from './Client'
+import { proto } from '../../WAProto'
+import { S_WHATSAPP_NET } from '../Defaults'
 
 /**
  * Connects to WA servers and performs:
@@ -40,6 +42,18 @@ export declare const makeSocket: (config: SocketConfig) => {
     /** Waits for the connection to WA to reach a state */
     waitForConnectionUpdate: (check: (u: Partial<import("../Types").ConnectionState>) => boolean | undefined, timeoutMs?: number | undefined) => Promise<void>
     sendWAMBuffer: (wamBuffer: Buffer) => Promise<BinaryNode>
+    /**
+     * Report a user or message to WhatsApp
+     * @param userJid The JID of the user to report (e.g. '1234567890@s.whatsapp.net')
+     * @param reasonCode The reason code for reporting (0-4)
+     * @param reportCount Number of times to report (default: 1)
+     */
+    sendReport: (userJid: string, reasonCode: number, reportCount?: number) => Promise<{
+        success: boolean
+        reportedUser: string
+        reportCount: number
+        timestamp: number
+    }>
 }
 
 export type Socket = ReturnType<typeof makeSocket>
