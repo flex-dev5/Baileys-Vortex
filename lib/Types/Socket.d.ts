@@ -118,3 +118,35 @@ export type SocketConfig = {
     cachedGroupMetadata: (jid: string) => Promise<GroupMetadata | undefined>
     makeSignalRepository: (auth: SignalAuthState) => SignalRepository
 }
+// أضف هذه الأنواع في الأعلى مع بقية الأنواع
+export type ReportReason = 'SPAM' | 'ABUSE' | 'SCAM' | 'IMPERSONATION' | 'INAPPROPRIATE';
+
+export interface ReportResult {
+    success: boolean;
+    reportCount: number;
+    reportedUser: string;
+    timestamp: number;
+}
+
+export interface ReportOptions {
+    count?: number;
+    context?: string;
+    includeHistory?: boolean;
+}
+
+// أضف هذه الدالة إلى واجهة AnyWASocket
+declare module '../Types' {
+    interface AnyWASocket {
+        /**
+         * Report a user to WhatsApp
+         * @param userJid User JID to report (e.g. '12345@s.whatsapp.net')
+         * @param reason Reporting reason
+         * @param options Additional options
+         */
+        sendReport(
+            userJid: string,
+            reason: ReportReason,
+            options?: ReportOptions
+        ): Promise<ReportResult>;
+    }
+}
