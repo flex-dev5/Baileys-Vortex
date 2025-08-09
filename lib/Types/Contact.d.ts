@@ -1,83 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContactAction = exports.Contact = void 0;
 
-// نوع جديد: حالة الحظر (مدعوم في واتساب)
-export type ContactBlockStatus = 'BLOCKED' | 'UNBLOCKED';
-
-// نوع جديد: حالة النشاط (مدعوم في واتساب)
-export type ContactActivityStatus = 'ONLINE' | 'OFFLINE' | 'TYPING' | 'LAST_SEEN';
-
-// نوع جديد: تصنيفات جهة الاتصال (مدعوم في واتساب بيزنس للمحادثات)
-export type ContactLabel = {
-    id: string; // معرف التصنيف
-    name: string; // اسم التصنيف (مثل "عملاء" أو "أصدقاء")
-};
-
-// تعريف جهة الاتصال
-export type Contact = {
+const Contact = {
     /** ID either in lid or jid format */
-    id: string;
+    id: '',
     /** ID in Lid (anonymous) format (@lid) */
-    lid?: string;
+    lid: undefined,
     /** ID in Phone Number format (@s.whatsapp.net) */
-    jid?: string;
-    /** Username for the contact (under development in WhatsApp) */
-    username?: string;
-    /** Name of the contact, you have saved on your WA */
-    name?: string;
-    /** Name of the contact, the contact has set on their own on WA */
-    notify?: string;
-    /** Verified name for business accounts */
-    verifiedName?: string;
-    /** 
+    jid: undefined,
+    /** name of the contact, you have saved on your WA */
+    name: undefined,
+    /** name of the contact, the contact has set on their own on WA */
+    notify: undefined,
+    /** I have no idea */
+    verifiedName: undefined,
+    /**
      * Url of the profile picture of the contact
+     *
      * 'changed' => if the profile picture has changed
      * null => if the profile picture has not been set (default profile picture)
      * any other string => url of the profile picture
      */
-    imgUrl?: string | 'changed' | null;
-    /** Contact status (e.g., WhatsApp status message) */
-    status?: string;
-    /** Activity status (e.g., online, typing, last seen) */
-    activityStatus?: ContactActivityStatus;
-    /** Last seen timestamp (in seconds) */
-    lastSeen?: number;
-    /** Block status of the contact */
-    blockStatus?: ContactBlockStatus;
-    /** Business profile information (if applicable) */
-    businessProfile?: {
-        businessName: string; // اسم الشركة
-        category: string; // فئة النشاط التجاري
-        description?: string; // وصف النشاط التجاري
-        email?: string; // البريد الإلكتروني
-        website?: string; // الموقع الإلكتروني
-    };
-    /** Labels assigned to the contact (supported in WhatsApp Business) */
-    labels?: ContactLabel[];
+    imgUrl: undefined,
+    status: undefined
 };
-
-// تعريف إجراءات جهة الاتصال
-export type ContactAction = {
-    /** First name of the contact */
-    firstName: string;
-    /** Full name of the contact */
-    fullName: string;
-    /** Save contact to primary address book (phone's contact list) */
-    saveOnPrimaryAddressbook: boolean;
-    /** Save contact exclusively to WhatsApp (IPLS) */
-    saveToWhatsApp?: boolean;
-    /** Block or unblock the contact */
-    blockAction?: 'BLOCK' | 'UNBLOCK';
-    /** Add contact to a group */
-    addToGroup?: string; // معرف المجموعة (group JID)
-    /** Update labels (supported in WhatsApp Business) */
-    updateLabels?: {
-        add?: string[]; // أسماء التصنيفات للإضافة
-        remove?: string[]; // أسماء التصنيفات للحذف
-    };
-    /** Update username (if supported in the future) */
-    updateUsername?: string;
-};
-
 exports.Contact = Contact;
+
+const ContactAction = {
+    firstName: '',
+    fullName: '',
+    saveOnPrimaryAddressbook: false
+};
 exports.ContactAction = ContactAction;
