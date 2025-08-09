@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 // نوع جديد: حالة الحظر
+// نوع جديد: حالة الحظر
 export type ContactBlockStatus = 'BLOCKED' | 'UNBLOCKED';
 
 // نوع جديد: حالة النشاط
@@ -75,6 +76,3 @@ export type ContactAction = {
         remove?: string[]; // أسماء التصنيفات للحذف
     };
 };
-
-exports.Contact = Contact;
-exports.ContactAction = ContactAction;
