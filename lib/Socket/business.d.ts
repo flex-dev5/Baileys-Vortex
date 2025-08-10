@@ -23,6 +23,7 @@ export declare const makeBusinessSocket: (config: SocketConfig) => {
         to: string
     }>
     rejectCall: (callId: string, callFrom: string) => Promise<void>
+    acceptCall: (callId: string, callFrom: string) => Promise<BinaryNode>
     fetchMessageHistory: (count: number, oldestMsgKey: import("../Types").WAProto.IMessageKey, oldestMsgTimestamp: number | import("long").Long) => Promise<string>
     requestPlaceholderResend: (messageKey: import("../Types").WAProto.IMessageKey) => Promise<string | undefined>
     getPrivacyTokens: (jids: string[]) => Promise<BinaryNode>
@@ -112,7 +113,7 @@ export declare const makeBusinessSocket: (config: SocketConfig) => {
     presenceSubscribe: (toJid: string, tcToken?: Buffer | undefined) => Promise<void>
     getBotListV2: () => Promise<BotListInfo[]>
     getLidUser: (jid: string) => Promise<{
-    	lid: string
+        lid: string
         id: string
     }[] | undefined>
     onWhatsApp: (...jids: string[]) => Promise<{
