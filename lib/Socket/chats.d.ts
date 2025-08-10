@@ -58,6 +58,14 @@ export declare const makeChatsSocket: (config: SocketConfig) => {
     }[], star: boolean) => Promise<void>
     addOrEditContact: (jid: string, contact: ContactAction) => Promise<void>
     removeContact: (jid: string) => Promise<void>
+    
+    // New Call Functions
+    call: (jid: string, type: 'audio' | 'video', offer?: proto.Call.ICallOffer) => Promise<string>
+    endCall: (callId: string, jid: string, reason?: proto.Call.ICallTerminate) => Promise<void>
+    sendCallOffer: (callId: string, jid: string, offer: proto.Call.ICallOffer) => Promise<void>
+    rejectCall: (callId: string, jid: string, reason: proto.Call.ICallReject) => Promise<void>
+    acceptCall: (callId: string, jid: string, accept: proto.Call.ICallAccept) => Promise<void>
+
     executeUSyncQuery: (usyncQuery: USyncQuery) => Promise<import("../WAUSync").USyncQueryResult | undefined>
     type: "md"
     ws: import("./Client").WebSocketClient
@@ -87,10 +95,5 @@ export declare const makeChatsSocket: (config: SocketConfig) => {
     uploadPreKeysToServerIfRequired: () => Promise<void>
     requestPairingCode: (phoneNumber: string, code?: string) => Promise<string>
     waitForConnectionUpdate: (check: (u: Partial<import("../Types").ConnectionState>) => boolean | undefined, timeoutMs?: number | undefined) => Promise<void>
-    /**
-     * modify a chat -- mark unread, read etc.
-     * lastMessages must be sorted in reverse chronologically
-     * requires the last messages till the last message received required for archive & unread
-    */
     sendWAMBuffer: (wamBuffer: Buffer) => Promise<BinaryNode>
 }
