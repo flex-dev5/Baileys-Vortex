@@ -1,6 +1,6 @@
 # Baileys-Vortex - WhatsApp Bot Framework
 
-![Baileys-Vortex Logo](https://files.catbox.moe/u953dy.png) <!-- Replace with actual logo if available -->
+![Baileys-Vortex Logo](https://files.catbox.moe/w4z3h6.png) <!-- Replace with actual logo if available -->
 
 **Baileys-Vortex** is a powerful, lightweight, and flexible JavaScript framework built on top of [Baileys](https://github.com/WhiskeySockets/Baileys), designed to simplify the creation of advanced WhatsApp bots. It offers a streamlined interface for interacting with WhatsApp's Web API, enabling developers to automate messaging, manage contacts, and handle WhatsApp Newsletters (Channels) with ease.
 
