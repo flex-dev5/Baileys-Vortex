@@ -1,7 +1,33 @@
 import { proto } from '../../WAProto'
-import { GroupMetadata, ParticipantAction, SocketConfig, ContactAction, WAPrivacyValue, WAPrivacyOnlineValue, WAPrivacyCallValue, WAReadReceiptsValue, WAPrivacyGroupAddValue, WABusinessProfile, WAMessageStubType, MessageUpsertType, WAPresence, WAMediaUpload, USyncQuery, USyncQueryResult, USyncQueryResultList } from '../Types'
+import {
+    GroupMetadata,
+    ParticipantAction,
+    SocketConfig,
+    ContactAction,
+    WAPrivacyValue,
+    WAPrivacyOnlineValue,
+    WAPrivacyCallValue,
+    WAReadReceiptsValue,
+    WAPrivacyGroupAddValue,
+    WABusinessProfile,
+    WAMessageStubType,
+    MessageUpsertType,
+    WAPresence,
+    WAMediaUpload,
+    USyncQuery,
+    USyncQueryResult,
+    USyncQueryResultList
+} from '../Types'
 import { BinaryNode } from '../WABinary'
-import { BaileysEventEmitter, AuthenticationCreds, SignalKeyStoreWithTransaction, SignalRepository, Contact, ChatModification, LabelActionBody } from '../Types'
+import {
+    BaileysEventEmitter,
+    AuthenticationCreds,
+    SignalKeyStoreWithTransaction,
+    SignalRepository,
+    Contact,
+    ChatModification,
+    LabelActionBody
+} from '../Types'
 
 export declare const makeGroupsSocket: (config: SocketConfig) => {
     groupQuery: (jid: string, type: string, content: BinaryNode) => Promise<BinaryNode>
@@ -9,18 +35,9 @@ export declare const makeGroupsSocket: (config: SocketConfig) => {
     groupCreate: (subject: string, participants: string[]) => Promise<GroupMetadata>
     groupLeave: (id: string) => Promise<void>
     groupUpdateSubject: (jid: string, subject: string) => Promise<void>
-    groupRequestParticipantsList: (jid: string) => Promise<{
-        [key: string]: string
-    }[]>
-    groupRequestParticipantsUpdate: (jid: string, participants: string[], action: 'approve' | 'reject') => Promise<{
-        status: string
-        jid: string
-    }[]>
-    groupParticipantsUpdate: (jid: string, participants: string[], action: ParticipantAction) => Promise<{
-        status: string
-        jid: string
-        content: BinaryNode
-    }[]>
+    groupRequestParticipantsList: (jid: string) => Promise<{ [key: string]: string }[]>
+    groupRequestParticipantsUpdate: (jid: string, participants: string[], action: 'approve' | 'reject') => Promise<{ status: string; jid: string }[]>
+    groupParticipantsUpdate: (jid: string, participants: string[], action: ParticipantAction) => Promise<{ status: string; jid: string; content: BinaryNode }[]>
     groupUpdateDescription: (jid: string, description?: string) => Promise<void>
     groupInviteCode: (jid: string) => Promise<string | undefined>
     groupRevokeInvite: (jid: string) => Promise<string | undefined>
@@ -32,27 +49,26 @@ export declare const makeGroupsSocket: (config: SocketConfig) => {
     groupSettingUpdate: (jid: string, setting: 'announcement' | 'not_announcement' | 'locked' | 'unlocked') => Promise<void>
     groupMemberAddMode: (jid: string, mode: 'admin_add' | 'all_member_add') => Promise<void>
     groupJoinApprovalMode: (jid: string, mode: 'on' | 'off') => Promise<void>
-    groupFetchAllParticipating: () => Promise<{
-        [_: string]: GroupMetadata
-    }>
+    groupFetchAllParticipating: () => Promise<{ [_: string]: GroupMetadata }>
+    
+    // ==== دوال المجتمعات (Communities) ====
+    communityCreate: (parentJid: string, subject: string, description?: string) => Promise<string>
+    communityAddSubGroup: (parentJid: string, subGroupJid: string) => Promise<boolean>
+    communityRemoveSubGroup: (communityJid: string, subGroupJid: string) => Promise<boolean>
+    communityMetadata: (communityJid: string) => Promise<GroupMetadata & { isCommunity: true }>
+    communityUpdateDescription: (communityJid: string, description: string) => Promise<void>
+    // ======================================
+
     processingMutex: {
         mutex<T>(code: () => T | Promise<T>): Promise<T>
     }
-    fetchPrivacySettings: (force?: boolean) => Promise<{
-        [_: string]: string
-    }>
+    fetchPrivacySettings: (force?: boolean) => Promise<{ [_: string]: string }>
     upsertMessage: (msg: proto.IWebMessageInfo, type: MessageUpsertType) => Promise<void>
     appPatch: (patchCreate: WAPatchCreate) => Promise<void>
     sendPresenceUpdate: (type: WAPresence, toJid?: string) => Promise<void>
     presenceSubscribe: (toJid: string, tcToken?: Buffer) => Promise<void>
-    getLidUser: (jid: string) => Promise<{
-        lid: string
-        id: string
-    }[] | undefined>
-    onWhatsApp: (...jids: string[]) => Promise<{
-        jid: string
-        exists: boolean
-    }[] | undefined>
+    getLidUser: (jid: string) => Promise<{ lid: string; id: string }[] | undefined>
+    onWhatsApp: (...jids: string[]) => Promise<{ jid: string; exists: boolean }[] | undefined>
     fetchBlocklist: () => Promise<string[]>
     fetchStatus: (...jids: string[]) => Promise<USyncQueryResultList[] | undefined>
     fetchDisappearingDuration: (...jids: string[]) => Promise<USyncQueryResultList[] | undefined>
@@ -79,17 +95,14 @@ export declare const makeGroupsSocket: (config: SocketConfig) => {
     addMessageLabel: (jid: string, messageId: string, labelId: string) => Promise<void>
     removeMessageLabel: (jid: string, messageId: string, labelId: string) => Promise<void>
     clearMessage: (jid: string, key: proto.IMessageKey, timeStamp: number | Long) => Promise<void>
-    star: (jid: string, messages: {
-        id: string
-        fromMe?: boolean
-    }[], star: boolean) => Promise<void>
+    star: (jid: string, messages: { id: string; fromMe?: boolean }[], star: boolean) => Promise<void>
     addOrEditContact: (jid: string, contact: ContactAction) => Promise<void>
     removeContact: (jid: string) => Promise<void>
     executeUSyncQuery: (usyncQuery: USyncQuery) => Promise<USyncQueryResult | undefined>
     
     // Socket properties
     type: "md"
-    ws: any // WebSocketClient type would need to be imported/defined
+    ws: any
     ev: BaileysEventEmitter & {
         process(handler: (events: Partial<BaileysEventMap>) => void | Promise<void>): () => void
         buffer(): void
